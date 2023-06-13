@@ -8,5 +8,5 @@ lsb:
     images: "E:/MATLAS Data/np_surveys/05"
     annotations: "E:/MATLAS Data/annotations/consensus"
 instance:
-    images: "E:/MATLAS Data/np_surveys/05_1024"
-    annotations: "E:/MATLAS Data/annotations/instance_combined"
+    images: "/home/worachit/panoptic-lsb/datasets/matlas_images_and_annotations/images"
+    annotations: "/home/worachit/panoptic-lsb/datasets/matlas_images_and_annotations/annotations"
