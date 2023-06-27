@@ -149,8 +149,7 @@ def main():
         dataset_test,
         batch_size=args.batch_size
     )
-
-    num_epochs = 1
+    num_epochs = 500
     for epoch in range(start_epoch, num_epochs):
         # train for one epoch, printing every 10 iterations
         train_one_epoch(model, optimizer, data_loader_train, device, epoch, print_freq=10)
@@ -179,7 +178,8 @@ def main():
                 optimizer, lr_scheduler = create_optim(model)
 
                 plot_new_dataset(new_dir, class_map)
-
+    
+    print("start predicting....................")
     # Plot predictions
     os.makedirs(os.path.join('./figs', args.model_key), exist_ok=True)
     plot_preds(model, data_loader_test, dataset_test, device, ver_dir=ver_dir, model_key=args.model_key)

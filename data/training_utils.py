@@ -130,7 +130,8 @@ TRANSFORMS = {
     'resize': albumentations.Resize,
     'pad': albumentations.PadIfNeeded,
     'flip': albumentations.Flip,
-    'rotate': albumentations.RandomRotate90,
+    # 'rotate': albumentations.RandomRotate90,
+    'rotate': albumentations.Rotate,
     'noise': albumentations.GaussNoise,
     'affine': albumentations.Affine,
     'contrast': albumentations.RandomContrast,
@@ -156,7 +157,8 @@ def lsb_datasets(class_map, dataset='instance'):
     transform = {
         'resize': [image_size, image_size],
         'flip': None,
-        'rotate': None,
+        # 'rotate': None,
+        'rotate' : {'limit': (-90, 90), 'p': 1},
         'noise': {'var_limit': .1, 'p': .8},
         'contrast': {'limit': 0.02}
     }

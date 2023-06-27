@@ -6,3 +6,4 @@ models/
 __pycache__/
 datasets/
 documents/
+slurm/

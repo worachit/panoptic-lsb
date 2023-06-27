@@ -259,4 +259,36 @@ class_maps = {
             False
         ],
     },
+    'basichalosnocompanions_mergetidal': {
+        'idxs': [
+            0, 2, 2, 2,
+            1, 0, 3, 0, 3,
+            0, 0, 0, 0, 0,
+            0, 0, 4, 0, 0
+        ],
+        'classes': [
+            'None', 'Galaxy', 'Elongated plus Galaxy', 'Diffuse halo', 'Ghosted halo'
+        ],
+        'class_balances': [
+            1., 1., 1., 1.
+        ],
+        'split_components': [
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 199, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True}
+        ],
+        'aggregate_methods': [
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+        ],
+        'segment': [
+            True, True, True, True
+        ],
+        'detect': [
+            True, True, True, True
+        ],
+    },
 }

@@ -97,6 +97,7 @@ def get_pretrained_with_alone_contaminant(num_classes):
 
 
 def get_pretrained_with_alone_gabor_contaminant(num_classes):
+    # this
     model = get_pretrained_model2311(num_classes - 1)
 
     model.contaminant_segmenter = ContaminantAloneSegmenter(256, 5, 8, attention_head=GaborTriAttentionHead)
