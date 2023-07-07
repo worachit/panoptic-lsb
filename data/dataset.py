@@ -137,8 +137,9 @@ class LSBInstanceDataset(Dataset):
 
         return torch.tensor(boxes, dtype=torch.float32)
 
-    def handle_transforms(self, image, mask):
+    def handle_transforms(self, image, mask, labels):
         if self.transform is not None:
+            print(self.transform)
             t = self.transform(image=image, mask=mask)
             image = t['image']
             mask = t['mask']
@@ -172,7 +173,7 @@ class LSBInstanceDataset(Dataset):
         img = self.to_albu(img)
         masks = self.to_albu(masks)
 
-        img, masks = self.handle_transforms(img, masks)
+        img, masks = self.handle_transforms(img, masks, labels)
         masks = masks.to(torch.uint8)
 
         # hopefully masks.shape = [N,H,W] - confirm

@@ -8,4 +8,4 @@
 #SBATCH --error=slurm/panoptic_error.log
 
 export PYTHONUNBUFFERED=TRUE
-python ./run.py --model_key=2311Pretrained --class_map=basichalosnocompanions --checkpoint_dir /mundus/wketrungs511/panoptic-lsb/models/2311Pretrained/ver12
+python ./run.py --model_key=2311Pretrained --class_map=basichalosnocompanions

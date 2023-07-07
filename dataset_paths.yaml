@@ -7,6 +7,9 @@ cirrus_only:
 lsb:
     images: "E:/MATLAS Data/np_surveys/05"
     annotations: "E:/MATLAS Data/annotations/consensus"
+# instance:
+#     images: "/mundus/wketrungs511/panoptic-lsb/datasets/matlas_images_and_annotations/images"
+#     annotations: "/mundus/wketrungs511/panoptic-lsb/datasets/matlas_images_and_annotations/annotations/standard"
 instance:
-    images: "/mundus/wketrungs511/panoptic-lsb/datasets/matlas_images_and_annotations/images"
-    annotations: "/mundus/wketrungs511/panoptic-lsb/datasets/matlas_images_and_annotations/annotations/standard"
+    images: "/home/worachit/panoptic-lsb/datasets/matlas_images_and_annotations/images"
+    annotations: "/home/worachit/panoptic-lsb/datasets/matlas_images_and_annotations/annotations/standard"

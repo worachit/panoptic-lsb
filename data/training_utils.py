@@ -119,6 +119,12 @@ def contrast_apply(self, img, alpha=1.0, beta=0.0, **params):
             img += beta * np.mean(img)
     return img
 
+def image_custom_elastic_transform(image, **params):
+    return image
+
+def mask_custom_elastic_transform(mask, **params):
+    print(mask.shape)
+    return mask
 
 albumentations.RandomContrast.apply = contrast_apply
 albumentations.GaussNoise.apply = gauss_apply
@@ -130,7 +136,7 @@ TRANSFORMS = {
     'resize': albumentations.Resize,
     'pad': albumentations.PadIfNeeded,
     'flip': albumentations.Flip,
-    # 'rotate': albumentations.RandomRotate90,
+    'rotate90': albumentations.RandomRotate90,
     'rotate': albumentations.Rotate,
     'noise': albumentations.GaussNoise,
     'affine': albumentations.Affine,
@@ -157,10 +163,10 @@ def lsb_datasets(class_map, dataset='instance'):
     transform = {
         'resize': [image_size, image_size],
         'flip': None,
-        # 'rotate': None,
-        'rotate' : {'limit': (-90, 90), 'p': 1},
+        'rotate90': None,
+        'rotate' : {'limit': (-10, 10), 'p': 1},
         'noise': {'var_limit': .1, 'p': .8},
-        'contrast': {'limit': 0.02}
+        'contrast': {'limit': 0.02},
     }
 
     # get datasets
