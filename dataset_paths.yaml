@@ -10,6 +10,9 @@ lsb:
 # instance:
 #     images: "/mundus/wketrungs511/panoptic-lsb/datasets/matlas_images_and_annotations/images"
 #     annotations: "/mundus/wketrungs511/panoptic-lsb/datasets/matlas_images_and_annotations/annotations/standard"
+# instance:
+#     images: "C:/Users/worac/Desktop/panoptic/datasets/matlas_images_and_annotations/images"
+#     annotations: "C:/Users/worac/Desktop/panoptic/datasets/matlas_images_and_annotations/annotations/standard"
 instance:
-    images: "/home/worachit/panoptic-lsb/datasets/matlas_images_and_annotations/images"
-    annotations: "/home/worachit/panoptic-lsb/datasets/matlas_images_and_annotations/annotations/standard"
+    images: "C:/Users/worac/Desktop/panoptic/datasets/matlas_images_and_annotations_augment/images"
+    annotations: "C:/Users/worac/Desktop/panoptic/datasets/matlas_images_and_annotations_augment/annotations/standard"

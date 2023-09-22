@@ -1,6 +1,7 @@
 import argparse
 import glob
 import os
+import time
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -92,6 +93,9 @@ def main():
     parser.add_argument('--batch_size',
                         default=1, type=int,
                         help='Training batch size. (default: %(default)s)')
+    parser.add_argument('--num_epochs',
+                        default=250, type=int,
+                        help='Number of epouches. (default: %(default)s)')
 
     args = parser.parse_args()
 
@@ -149,7 +153,9 @@ def main():
         dataset_test,
         batch_size=args.batch_size
     )
-    num_epochs = 500
+    num_epochs = args.num_epochs
+    if start_epoch != 0:
+        print("start epoch at: ", start_epoch)
     for epoch in range(start_epoch, num_epochs):
         # train for one epoch, printing every 10 iterations
         train_one_epoch(model, optimizer, data_loader_train, device, epoch, print_freq=10)
@@ -178,14 +184,18 @@ def main():
                 optimizer, lr_scheduler = create_optim(model)
 
                 plot_new_dataset(new_dir, class_map)
-    
-    print("start predicting....................")
+        torch.cuda.empty_cache()
+        
     # Plot predictions
     os.makedirs(os.path.join('./figs', args.model_key), exist_ok=True)
     plot_preds(model, data_loader_test, dataset_test, device, ver_dir=ver_dir, model_key=args.model_key)
 
     # Evaluate predictions and plot PR-curves
     for lbl in range(1, len(dataset_test.classes)):
+        evaluator = evaluate(model, data_loader_test, device=device, classes=[lbl])
+        ap_plot(evaluator, dataset_test.classes[lbl], os.path.join('./figs', args.model_key, ver_dir))
+
+    if 'Elongated plus tidal' in class_map:
         evaluator = evaluate(model, data_loader_test, device=device, classes=[lbl])
         ap_plot(evaluator, dataset_test.classes[lbl], os.path.join('./figs', args.model_key, ver_dir))
 
@@ -297,4 +307,6 @@ def get_data_loaders(dataset_train, dataset_val, dataset_test, batch_size=2):
 
 
 if __name__ == '__main__':
-    main()
+    while(1):
+        main()
+        time.sleep(60)

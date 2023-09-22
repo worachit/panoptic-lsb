@@ -37,7 +37,7 @@ def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq):
         optimizer.zero_grad()
         losses.backward()
         # gradient clipping
-        torch.nn.utils.clip_grad_norm_(model.parameters(),  max_norm=100)
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
 
         metric_logger.update(loss=losses_reduced, **loss_dict_reduced)

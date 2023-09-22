@@ -5,7 +5,6 @@ import yaml
 import data.scale
 import numpy as np
 import torch
-import glob
 
 from data.dataset import (
     LSBInstanceDataset,
@@ -43,7 +42,7 @@ if os.path.exists('./dataset_paths.yaml'):
             datasets[dataset_type].update(paths[dataset_type])
 
 
-def construct_dataset(dataset_type="train", dataset='instance', transform=None, idxs=None, bands=['g', 'r'], class_map='basicshells',
+def construct_dataset(dataset='instance', transform=None, idxs=None, bands=['g', 'r'], class_map='basicshells',
                       aug_mult=1, padding=0, images_path=None, ann_path=None):
     Dataset = datasets[dataset]['class']
     if transform is not None:
@@ -55,18 +54,9 @@ def construct_dataset(dataset_type="train", dataset='instance', transform=None, 
             raise ValueError('annotations path not passed and it is not set in ./dataset_paths.yaml')
     if images_path is None:
         if 'images' in datasets[dataset]:
-            # images_path = datasets[dataset]['images']
-            if dataset_type == "train":
-                # images_path = os.path.join(datasets[dataset]['images'], "train")
-                images_path = datasets[dataset]['images'] + "/train" 
-            elif dataset_type == "test":
-                # images_path = os.path.join(datasets[dataset]['images'], "test")
-                images_path = datasets[dataset]['images'] + "/test"
-            else:
-                raise ValueError('dataset_type can be either train or test')
+            images_path = datasets[dataset]['images']
         else:
             raise ValueError('images path not passed and it is not set in ./dataset_paths.yaml')
-            
     return Dataset(
         images_path,
         ann_path,
@@ -77,6 +67,7 @@ def construct_dataset(dataset_type="train", dataset='instance', transform=None, 
         transform=transform,
         padding=padding,
     )
+
 
 def get_transform(transforms):
     def parse_args(args):
@@ -128,6 +119,7 @@ def contrast_apply(self, img, alpha=1.0, beta=0.0, **params):
             img += beta * np.mean(img)
     return img
 
+
 albumentations.RandomContrast.apply = contrast_apply
 albumentations.GaussNoise.apply = gauss_apply
 albumentations.RandomCrop.apply = crop_apply
@@ -138,9 +130,7 @@ TRANSFORMS = {
     'resize': albumentations.Resize,
     'pad': albumentations.PadIfNeeded,
     'flip': albumentations.Flip,
-    'rotate90': albumentations.RandomRotate90,
-    'rotate': albumentations.Rotate,
-    'safe_crop': albumentations.BBoxSafeRandomCrop,
+    'rotate': albumentations.RandomRotate90,
     'noise': albumentations.GaussNoise,
     'affine': albumentations.Affine,
     'contrast': albumentations.RandomContrast,
@@ -150,53 +140,38 @@ TRANSFORMS = {
 
 def lsb_datasets(class_map, dataset='instance'):
     # split the dataset in train and test set
-    dataset_train = construct_dataset(dataset_type="train", dataset=dataset, class_map=class_map)
-    dataset_test = construct_dataset(dataset_type="test", dataset=dataset, class_map=class_map)
-
-    N_train = len(dataset_train)
-    N_test = len(dataset_test)
-    del(dataset_train)
-    del(dataset_test)
+    dataset = construct_dataset(dataset=dataset, class_map=class_map)
+    N = len(dataset)
 
     # define proportion of dataset where to start test&validation sets
     # currently validation set has size zero, and test is 15% of dataset
-    # test_p = .85
-    # val_p = .85
-    # indices = torch.randperm(int(N * test_p)).tolist()
-    # test_indices = torch.arange(int(N * test_p), N).tolist()
-    
-    val_p = 1.0
-    train_indices = torch.randperm(int(N_train)).tolist()
-    test_indices = torch.arange(0, N_test).tolist()
+    test_p = .85
+    val_p = .85
+    indices = torch.randperm(int(N * test_p)).tolist()
+    test_indices = torch.arange(int(N * test_p), N).tolist()
 
     image_size = 1024
-    RANDOM_CROP_RATIO = 0.8
 
     # define transform
     transform = {
-        # 'rotate90': None,
-        'rotate': {'limit':90, 'crop_border':False, 'p':.8},
-        'crop': {'height':int(RANDOM_CROP_RATIO*image_size), 'width': int(RANDOM_CROP_RATIO*image_size), 'p': .8},
         'resize': [image_size, image_size],
         'flip': None,
+        'rotate': None,
         'noise': {'var_limit': .1, 'p': .8},
-        'contrast': {'limit': 0.02},
+        'contrast': {'limit': 0.02}
     }
 
     # get datasets
     dataset_train = construct_dataset(
-        dataset_type="train",
-        idxs=train_indices[:int(N_train * val_p)],
+        idxs=indices[:int(N * val_p)],
         class_map=class_map,
         transform=transform,
         aug_mult=4)
     dataset_val = construct_dataset(
-        dataset_type="train",
-        idxs=train_indices[int(N_train * val_p):],
+        idxs=indices[int(N * val_p):int(N * test_p)],
         class_map=class_map,
         transform=transform)
     dataset_test = construct_dataset(
-        dataset_type="test",
         idxs=test_indices,
         class_map=class_map,
         transform={'resize': [image_size, image_size]})

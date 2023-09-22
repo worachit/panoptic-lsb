@@ -291,4 +291,162 @@ class_maps = {
             True, True, True, True
         ],
     },
+    'basichalosnocontaminantnocompanions_mergetidal': {
+        'idxs': [
+            0, 2, 2, 2,
+            1, 0, 3, 0, 3,
+        ],
+        'classes': [
+            'None', 'Galaxy', 'Elongated plus Galaxy'
+        ],
+        'class_balances': [
+            1., 1.
+        ],
+        'split_components': [
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 199, 'prune': True},
+        ],
+        'aggregate_methods': [
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+        ],
+        'segment': [
+            True, True
+        ],
+        'detect': [
+            True, True
+        ],
+    },
+    'basichalosnocompanions_remergetidal': {
+        'idxs': [
+            0, 2, 2, 2,
+            1, 0, 3, 0, 3,
+            0, 0, 0, 0, 0,
+            0, 0, 4, 0, 0
+        ],
+        'classes': [
+            'None', 'Galaxy', 'Elongated tidal structures', 'Diffuse halo', 'Ghosted halo'
+        ],
+        'class_balances': [
+            1., 1., 1., 1.
+        ],
+        'split_components': [
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 199, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True}
+        ],
+        'aggregate_methods': [
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+        ],
+        'segment': [
+            True, True, True, True
+        ],
+        'detect': [
+            True, True, True, True
+        ],
+    },
+    'basichalosnocompanions_mergetidal2core': {
+        'idxs': [
+            0, 2, 2, 2,
+            1, 0, 3, 0, 3,
+            0, 0, 0, 0, 0,
+            0, 0, 4, 0, 0
+        ],
+        'classes': [
+            'None', 'Galaxy', 'Elongated plus Galaxy', 'Diffuse halo', 'Ghosted halo'
+        ],
+        'class_balances': [
+            1., 1., 1., 1.
+        ],
+        'split_components': [
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 199, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True}
+        ],
+        'aggregate_methods': [
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+        ],
+        'segment': [
+            True, True, True, True
+        ],
+        'detect': [
+            True, True, True, True
+        ],
+    },
+    'basichaloscirrusnocompanions_remergetidal': {
+        'idxs': [
+            0, 2, 2, 2,
+            1, 0, 3, 0, 3,
+            0, 0, 0, 0, 0,
+            0, 0, 4, 5, 0
+        ],
+        'classes': [
+            'None', 'Galaxy', 'Elongated tidal structures', 'Diffuse halo', 'Ghosted halo', 'Cirrus'
+        ],
+        'class_balances': [
+            1., 1., 1., 1., 1.
+        ],
+        'split_components': [
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 199, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': False, 'prune': True},
+        ],
+        'aggregate_methods': [
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+            {'method': 'union'},
+        ],
+        'segment': [
+            True, True, True, True, True
+        ],
+        'detect': [
+            True, True, True, True, False
+        ],
+    },
+    'basichaloscirrusnocompanions_mergetidal2core': {
+        'idxs': [
+            0, 2, 2, 2,
+            1, 0, 3, 0, 3,
+            0, 0, 0, 0, 0,
+            0, 0, 4, 5, 0
+        ],
+        'classes': [
+            'None', 'Galaxy', 'Elongated plus Galaxy', 'Diffuse halo', 'Ghosted halo', 'Cirrus'
+        ],
+        'class_balances': [
+            1., 1., 1., 1., 1.
+        ],
+        'split_components': [
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 199, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': True, 'blur': 0, 'prune': True},
+            {'split': False, 'prune': True},
+        ],
+        'aggregate_methods': [
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+            {'method': 'nms', 'threshold': .3},
+            {'method': 'union'},
+            {'method': 'union'},
+        ],
+        'segment': [
+            True, True, True, True, True
+        ],
+        'detect': [
+            True, True, True, True, False
+        ],
+    },
 }

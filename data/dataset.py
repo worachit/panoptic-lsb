@@ -120,11 +120,14 @@ class LSBInstanceDataset(Dataset):
     @classmethod
     def bound_object(cls, mask):
         pos = np.where(mask)
-        xmin = np.min(pos[1])
-        xmax = np.max(pos[1])
-        ymin = np.min(pos[0])
-        ymax = np.max(pos[0])
-        return [xmin, ymin, xmax, ymax]
+        if np.size(pos[0]) == 0 or np.size(pos[1]) == 0:
+            return [0, 0, 0, 0]
+        else:
+            xmin = np.min(pos[1])
+            xmax = np.max(pos[1])
+            ymin = np.min(pos[0])
+            ymax = np.max(pos[0])
+            return [xmin, ymin, xmax, ymax]
 
     def bounding_boxes(self, masks, labels):
         num_objs, H, W = masks.shape
@@ -137,9 +140,8 @@ class LSBInstanceDataset(Dataset):
 
         return torch.tensor(boxes, dtype=torch.float32)
 
-    def handle_transforms(self, image, mask, labels):
+    def handle_transforms(self, image, mask):
         if self.transform is not None:
-            print(self.transform)
             t = self.transform(image=image, mask=mask)
             image = t['image']
             mask = t['mask']
@@ -162,6 +164,7 @@ class LSBInstanceDataset(Dataset):
 
         masks = []
         labels = []
+
         for class_key, mask_path in self.mask_paths[i].items():
             mask = self.decode_np_mask(np.load(mask_path, allow_pickle=True))[0]
             mask = mask[np.count_nonzero(mask, axis=(1, 2)) > 0]
@@ -173,7 +176,7 @@ class LSBInstanceDataset(Dataset):
         img = self.to_albu(img)
         masks = self.to_albu(masks)
 
-        img, masks = self.handle_transforms(img, masks, labels)
+        img, masks = self.handle_transforms(img, masks)
         masks = masks.to(torch.uint8)
 
         # hopefully masks.shape = [N,H,W] - confirm
@@ -263,6 +266,7 @@ class LSBInstanceDataset(Dataset):
         else:
             gal = self.get_colour_image(galaxy, fits_path)
         target = item[1]
+        
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
         fig.suptitle(f'class_map={self.class_map_key}')
         ax.imshow(gal)
@@ -311,7 +315,7 @@ class LSBInstanceDataset(Dataset):
             del mask
             ax.imshow(mask_to_plot, vmin=0, vmax=1)
             del mask_to_plot
-            x, y, x1, y1 = boxes[i]
+            x, y , x1, y1 = boxes[i]
             box = patches.Rectangle(
                 (x, y),
                 (x1 - x),
